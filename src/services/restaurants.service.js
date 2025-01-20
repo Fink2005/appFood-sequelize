@@ -6,7 +6,7 @@ const restaurantsService = {
     const restaurants = await models.restaurant.findAll();
     return restaurants;
   },
-  restaurantLiked: async (req) => {
+  restaurantLiked: async () => {
     const isLiked = await models.like_res.findAll({
       attributes: [
         [
@@ -30,7 +30,7 @@ const restaurantsService = {
   },
 
   restaurantlikedList: async (req) => {
-    let { restaurant_id } = req.body;
+    let { restaurant_id } = req.params;
 
     const findNameRestaurant = await models.restaurant.findOne({
       raw: true,
@@ -65,7 +65,7 @@ const restaurantsService = {
   },
 
   restaurantRatingList: async (req) => {
-    const { res_id } = req.body;
+    const { res_id } = req.params;
     const restaurantName = await models.restaurant.findOne({
       where: {
         res_id,
@@ -103,6 +103,27 @@ const restaurantsService = {
   restaurantRating: async (req) => {
     let newDate = new Date();
     let { user_id, res_id, amount } = req.body;
+
+    let userExist = await models.user.findOne({
+      where: {
+        user_id,
+      },
+      raw: true,
+    });
+    if (!userExist) {
+      throw new BadRequestException("Nhà hàng không tồn tại");
+    }
+
+    let resExist = await models.restaurant.findOne({
+      where: {
+        res_id,
+      },
+      raw: true,
+    });
+    if (!resExist) {
+      throw new BadRequestException("Nhà hàng không tồn tại");
+    }
+
     let createRating = await models.rate_res.create({
       user_id,
       res_id,

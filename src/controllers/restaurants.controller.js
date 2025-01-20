@@ -9,16 +9,17 @@ const restaurantsController = {
       const resData = responeSuccess(restaurant, "thanh cong em oi", 200);
       res.status(resData.code).json(resData);
     } catch (error) {
+      next(error);
       console.log(error);
     }
   },
   restaurantLiked: async (req, res, next) => {
     try {
-      let restaurant = await restaurantsService.restaurantLiked(req);
+      let restaurant = await restaurantsService.restaurantLiked();
       let resData = responeSuccess(restaurant, "THành cong", 200);
       res.status(resData.code).json(resData);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   },
   restaurantlikedList: async (req, res, next) => {
@@ -27,7 +28,7 @@ const restaurantsController = {
       const resData = responeSuccess(restaurant, "thanh cong roi em iu", 200);
       res.status(resData.code).json(resData);
     } catch (error) {
-      console.log("loi", error);
+      next(error);
     }
   },
   restaurantRating: async (req, res, next) => {
@@ -36,7 +37,7 @@ const restaurantsController = {
       const resData = responeSuccess(restaurant, "thanh cong roi em iu", 200);
       res.status(resData.code).json(resData);
     } catch (error) {
-      console.log("loi", error);
+      next(error);
     }
   },
   restaurantRatingList: async (req, res, next) => {
@@ -56,7 +57,6 @@ const restaurantsController = {
       res.status(resdata.code).json(resdata);
     } catch (error) {
       next(error);
-      console.log(error);
     }
   },
 };

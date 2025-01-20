@@ -8,7 +8,7 @@ const usersService = {
     return usersNe;
   },
   userLikedList: async (req) => {
-    let { user_id } = req.body;
+    let { user_id } = req.params;
     const findNameUser = await models.user.findOne({
       raw: true,
       where: {
@@ -41,7 +41,7 @@ const usersService = {
     return resDataLiked;
   },
   userRating: async (req) => {
-    const { user_id } = req.body;
+    const { user_id } = req.params;
     const userName = await models.user.findOne({
       where: {
         user_id,
@@ -75,7 +75,6 @@ const usersService = {
 
     return resDataRating;
   },
-
   userOrder: async (req) => {
     let { user_id, food_id } = req.body;
 
@@ -85,8 +84,6 @@ const usersService = {
       },
       raw: true,
     });
-
-    console.log(userExist);
 
     if (!userExist) {
       throw new BadRequestException("Người dùng không tồn tại");
@@ -107,6 +104,23 @@ const usersService = {
       food_id,
     });
     return "Order thành công";
+  },
+  addingUserListById: async (req) => {
+    const { full_name, email, password } = req.body;
+    const emailExist = await models.user.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailExist) throw new BadRequestException("Email ton tai");
+    const newUser = await models.user.create({
+      full_name,
+      email,
+      password,
+    });
+
+    delete newUser.password;
+    return newUser;
   },
 };
 export default usersService;

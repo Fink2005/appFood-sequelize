@@ -15,11 +15,11 @@ restaurantRouter.post(
 );
 
 restaurantRouter.post(
-  "/restaurant-rating-list",
+  "/restaurant-rating-list/:res_id",
   restaurantsController.restaurantRatingList
 );
-restaurantRouter.post(
-  "/restaurant-liked-list",
+restaurantRouter.get(
+  "/restaurant-liked-list/:restaurant_id",
   restaurantsController.restaurantlikedList
 );
 
